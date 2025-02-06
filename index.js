@@ -21,16 +21,17 @@ function isPrime(number) {
 // Optimized perfect number check
 // Check if a number is perfect
 function isPerfect(number) {
-    if (number <= 0) return false;  // Perfect numbers are positive integers
-    let sum = 1; // Start at 1 since it's always a divisor
-    for (let i = 2; i <= Math.sqrt(number); i++) {
-        if (number % i === 0) {
-            sum += i;
-            if (i !== number / i) sum += number / i;
-        }
-    }
-    return sum === number; // The number must equal the sum of its divisors
+  if (number <= 1) return false;  // 1 is not a perfect number, and perfect numbers must be greater than 1
+  let sum = 1; // Start at 1 since it's always a divisor
+  for (let i = 2; i <= Math.sqrt(number); i++) {
+      if (number % i === 0) {
+          sum += i;
+          if (i !== number / i) sum += number / i;
+      }
+  }
+  return sum === number; // The number must equal the sum of its divisors
 }
+
 
 // Check if a number is Armstrong
 function isArmstrong(number) {
@@ -49,7 +50,8 @@ function isArmstrong(number) {
 
 // Function to calculate the digit sum
 function digitSum(number) {
-    return number < 10 ? number : number.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+  const absNumber = Math.abs(number);  // Use the absolute value of the number
+  return absNumber < 10 ? absNumber : absNumber.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
 }
 
 // stage 1 endpoint
