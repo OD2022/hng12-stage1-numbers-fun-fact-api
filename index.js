@@ -7,18 +7,19 @@ app.use(express.json());
 app.use(cors()); 
 
 
-const Email = 'io.emma.addy@gmail.com';
-const githubUrl = 'https://github.com/OD2022/hng_stage0';
-
-
 // check if a number is prime
 function isPrime(number) {
-    if (number <= 1) return false;
-    for (let i = 2; i <= Math.sqrt(number); i++) {
-        if (number % i === 0) return false;
-    }
-    return true;
+  // Check if the number is negative or less than 2
+  if (number < 2) return false;
+
+  // Check for factors from 2 up to the square root of the number
+  for (let i = 2; i <= Math.sqrt(number); i++) {
+      if (number % i === 0) return false;
+  }
+  
+  return true;
 }
+
 
 // check if a number is perfect
 function isPerfect(number) {
@@ -37,10 +38,16 @@ function isArmstrong(number) {
     return sum === number;
 }
 
+
 // function to calculate digit sum
 function digitSum(number) {
-    return number.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+  if ((number) < 10) {
+      return number;
+  }
+  // Otherwise, calculate the sum of digits
+  return number.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
 }
+
 
 
 
@@ -48,32 +55,33 @@ function digitSum(number) {
 app.get('/api/classify-number', async (req, res) => {
   const { number } = req.query;
 
-  if (!Number.isInteger(parseFloat(number)) || parseInt(number) < 0) {
+  // Check if the 'number' is a valid integer
+  if (!Number.isInteger(parseFloat(number))) {
       return res.status(400).json({
-          number: "alphabet",
+          number: number,
           error: true
       });
   }
   
-  const num = parseInt(number);
+  let num = parseInt(number);
 
     // Fetching fun fact from Numbers API
     try {
-        const response = await axios.get(`http://numbersapi.com/${num}?json`);
+        const response = await axios.get(`http://numbersapi.com/${Math.abs(num)}?json`);
         const funFact = response.data.text;
 
         // Mathematical properties of the number
         const properties = [];
-        if (isArmstrong(num)) properties.push('armstrong');
-        if (num % 2 !== 0) properties.push('odd');
-        if (num % 2  == 0) properties.push('even');
+        if (isArmstrong(Math.abs(num))) properties.push('armstrong');
+        if (Math.abs(num) % 2 !== 0) properties.push('odd');
+        if (Math.abs(num) % 2  == 0) properties.push('even');
 
         const result = {
             number: num,
-            is_prime: isPrime(num),
-            is_perfect: isPerfect(num),
+            is_prime: isPrime((num)),
+            is_perfect: isPerfect(Math.abs(num)),
             properties: properties,
-            digit_sum: digitSum(num),
+            digit_sum: digitSum(Math.abs(num)),
             fun_fact: funFact
         };
 
@@ -83,31 +91,6 @@ app.get('/api/classify-number', async (req, res) => {
     }
 });
 
-
-
-app.get('/stage0', (req, res) => {
-  try {
-
-    const currentTime = new Date().toISOString();
-
-    const response = {
-      email: Email,
-      current_datetime: currentTime,
-      github_url: githubUrl
-    };
-
-
-    res.status(200).json(response);
-  } catch (error) {
-    console.error('Error occurred while processing the request:', error);
-    
-    
-    res.status(500).json({
-      error: 'Internal Server Error',
-      message: 'An error occurred while processing the request.'
-    });
-  }
-});
 
 
 app.listen(port, () => {
