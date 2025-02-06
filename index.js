@@ -3,9 +3,6 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 const cors = require("cors");
-const NodeCache = require("node-cache");
-
-const cache = new NodeCache({ stdTTL: 60, checkperiod: 120 });
 
 app.use(express.json());
 app.use(cors());
@@ -59,37 +56,25 @@ app.get('/api/classify-number', async (req, res) => {
 
     let num = Math.abs(parseInt(number));
 
-    // Check if the result is cached
-    let cachedResult = cache.get(num);
-    if (cachedResult) {
-        return res.status(200).json(cachedResult);
-    }
-
     try {
         // Fetching fun fact from Numbers API asynchronously
-        const [funFactResponse] = await Promise.all([
-            axios.get(`http://numbersapi.com/${num}?json`),
-        ]);
-
+        const funFactResponse = await axios.get(`http://numbersapi.com/${num}?json`);
         const funFact = funFactResponse.data.text;
 
         // Mathematical properties of the number
         const properties = [];
-        if (isArmstrong(num)) properties.push('armstrong');
-        if (num % 2 !== 0) properties.push('odd');
-        if (num % 2 === 0) properties.push('even');
+        if (isArmstrong(number)) properties.push('armstrong');
+        if (number % 2 !== 0) properties.push('odd');
+        if (number % 2 === 0) properties.push('even');
 
         const result = {
             number: number,
             is_prime: isPrime(number),
-            is_perfect: isPerfect(num),
+            is_perfect: isPerfect(number),
             properties: properties,
             digit_sum: digitSum(num),
             fun_fact: funFact
         };
-
-        // Cache the result for 60 seconds
-        cache.set(num, result);
 
         res.status(200).json(result);
     } catch (error) {
