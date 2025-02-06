@@ -19,24 +19,28 @@ function isPrime(number) {
 }
 
 // Optimized perfect number check
+// Check if a number is perfect
 function isPerfect(number) {
-    let sum = 1; // Start at 1 since it's always a divisor
-    for (let i = 2; i <= Math.sqrt(number); i++) {
-        if (number % i === 0) {
-            sum += i;
-            if (i !== number / i) sum += number / i;
-        }
-    }
-    return sum === number && number !== 1; // 1 is not a perfect number
+  let num = Math.abs(number); // Ensure the number is positive
+  let sum = 1; // Start at 1 since it's always a divisor
+  for (let i = 2; i <= Math.sqrt(num); i++) {
+      if (num % i === 0) {
+          sum += i;
+          if (i !== num / i) sum += num / i;
+      }
+  }
+  return sum === num && num !== 1; // 1 is not a perfect number
 }
 
-// Armstrong check remains the same
+// Check if a number is Armstrong
 function isArmstrong(number) {
-    const digits = number.toString().split('');
-    const numLength = digits.length;
-    const sum = digits.reduce((acc, digit) => acc + Math.pow(parseInt(digit), numLength), 0);
-    return sum === number;
+  let num = Math.abs(number); // Ensure the number is positive
+  const digits = num.toString().split('');
+  const numLength = digits.length;
+  const sum = digits.reduce((acc, digit) => acc + Math.pow(parseInt(digit), numLength), 0);
+  return sum === num;
 }
+
 
 function digitSum(number) {
     return number < 10 ? number : number.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
@@ -73,7 +77,6 @@ app.get('/api/classify-number', async (req, res) => {
             is_perfect: isPerfect(num),
             properties: properties,
             digit_sum: digitSum(Math.abs(num)),
-
             fun_fact: funFact
         };
 
