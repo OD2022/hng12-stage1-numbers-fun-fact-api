@@ -56,17 +56,18 @@ function digitSum(number) {
 
 // stage 1 endpoint
 app.get('/api/classify-number', async (req, res) => {
-    const { number } = req.query;
+  const { number } = req.query;
 
-    // Check if the 'number' is a valid integer
-    if (!Number.isInteger(parseFloat(number))) {
-        return res.status(400).json({
-            number: number,
-            error: true
-        });
-    }
+  // Check if the 'number' is a valid integer using a regular expression
+  if (!/^[-+]?\d+$/.test(number)) {
+      return res.status(400).json({
+          number: number,
+          error: true,
+      });
+  }
+  
+  let num = parseInt(number);
 
-    let num = parseInt(number);
 
     try {
         // Fetching fun fact from Numbers API using the number as it is (no Math.abs())
