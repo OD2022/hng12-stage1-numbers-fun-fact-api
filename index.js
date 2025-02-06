@@ -33,13 +33,21 @@ function isPerfect(number) {
 }
 
 // Check if a number is Armstrong
+// Check if a number is Armstrong
 function isArmstrong(number) {
   let num = Math.abs(number); // Ensure the number is positive
+
+  // If the number is a single digit, it's always an Armstrong number
+  if (num < 10) {
+      return true;
+  }
+
   const digits = num.toString().split('');
   const numLength = digits.length;
   const sum = digits.reduce((acc, digit) => acc + Math.pow(parseInt(digit), numLength), 0);
   return sum === num;
 }
+
 
 
 function digitSum(number) {
