@@ -21,35 +21,33 @@ function isPrime(number) {
 // Optimized perfect number check
 // Check if a number is perfect
 function isPerfect(number) {
-  let num = Math.abs(number); // Ensure the number is positive
-  let sum = 1; // Start at 1 since it's always a divisor
-  for (let i = 2; i <= Math.sqrt(num); i++) {
-      if (num % i === 0) {
-          sum += i;
-          if (i !== num / i) sum += num / i;
-      }
-  }
-  return sum === num && num !== 1; // 1 is not a perfect number
+    if (number <= 0) return false;  // Perfect numbers are positive integers
+    let sum = 1; // Start at 1 since it's always a divisor
+    for (let i = 2; i <= Math.sqrt(number); i++) {
+        if (number % i === 0) {
+            sum += i;
+            if (i !== number / i) sum += number / i;
+        }
+    }
+    return sum === number; // The number must equal the sum of its divisors
 }
 
-// Check if a number is Armstrong
 // Check if a number is Armstrong
 function isArmstrong(number) {
-  let num = Math.abs(number); // Ensure the number is positive
+    const num = Math.abs(number);  // Take the absolute value, because we are dealing with digits
 
-  // If the number is a single digit, it's always an Armstrong number
-  if (num < 10) {
-      return true;
-  }
+    // If the number is a single digit, it's always an Armstrong number
+    if (num < 10) {
+        return true;
+    }
 
-  const digits = num.toString().split('');
-  const numLength = digits.length;
-  const sum = digits.reduce((acc, digit) => acc + Math.pow(parseInt(digit), numLength), 0);
-  return sum === num;
+    const digits = num.toString().split('');
+    const numLength = digits.length;
+    const sum = digits.reduce((acc, digit) => acc + Math.pow(parseInt(digit), numLength), 0);
+    return sum === num;
 }
 
-
-
+// Function to calculate the digit sum
 function digitSum(number) {
     return number < 10 ? number : number.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
 }
@@ -69,7 +67,7 @@ app.get('/api/classify-number', async (req, res) => {
     let num = parseInt(number);
 
     try {
-        // Fetching fun fact from Numbers API asynchronously
+        // Fetching fun fact from Numbers API using the number as it is (no Math.abs())
         const funFactResponse = await axios.get(`http://numbersapi.com/${num}?json`);
         const funFact = funFactResponse.data.text;
 
@@ -84,7 +82,7 @@ app.get('/api/classify-number', async (req, res) => {
             is_prime: isPrime(num),
             is_perfect: isPerfect(num),
             properties: properties,
-            digit_sum: digitSum(Math.abs(num)),
+            digit_sum: digitSum(num),  // Use number as it is for digit sum
             fun_fact: funFact
         };
 
