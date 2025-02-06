@@ -1,8 +1,7 @@
 # API Documentation
 
 ## Overview
-
-This API exposes a simple endpoint that returns basic information including an email, timestamp, and GitHub URL. The endpoint is intended to be used to retrieve some metadata about the system. This documentation outlines the API, available endpoints, expected request and response formats, and the API's functionality.
+This project allows users to submit a number and receive a classification with its mathematical properties, digit sum, and a fun fact.
 
 ---
 
@@ -10,10 +9,8 @@ This API exposes a simple endpoint that returns basic information including an e
 
 The base URL for the API is:
 
-http://localhost:3000
+http://localhost:3000/api/classify-number
 
-yaml
-Copy
 
 ### CORS Support
 
@@ -22,54 +19,13 @@ This API supports Cross-Origin Resource Sharing (CORS) to allow requests from va
 ---
 # API Documentation
 
-## Endpoints
-
-### 1. `/stage0`
-
-#### Method: `GET`
-
-The `/stage0` endpoint returns information such as an email, a timestamp of the request, and a GitHub URL.
-
-#### Request URL:
-GET /stage0
-
-markdown
-Copy
-
 #### Request Headers:
 - `Content-Type`: `application/json`
 - `Accept`: `application/json`
 
-#### Request Parameters:
-- No request parameters are required for this endpoint.
+###Endpoints:
 
-#### Example Request:
-```http
-GET http://localhost:3000/stage0
-Success Response (200 OK):
-If the request is successful, the API will respond with the following JSON structure:
-
-json
-Copy
-{
-  "email": "myemail@gmail.com",
-  "current_datetime": "2025-01-30T15:00:00.000Z",
-  "github_url": "https://github.com/OD2022/hng_stage0"
-}
-email: The contact email address for the system.
-current_datetime: The time the request was processed, in ISO 8601 format.
-github_url: The URL to the associated GitHub repository.
-Error Response (500 Internal Server Error):
-In case of an error, the API will respond with a 500 status and an error message in the following structure:
-
-json
-Copy
-{
-  "error": "Internal Server Error",
-  "message": "An error occurred while processing the request."
-}
-
-2. /api/classify-number
+1. /api/classify-number
 This endpoint allows users to submit a number and receive a classification with its mathematical properties, digit sum, and a fun fact.
 
 Method: GET
@@ -128,7 +84,7 @@ Clone the repository:
 
 bash
 Copy
-git clone https://github.com/OD2022/myrepo.git
+git clone https://github.com/OD2022/hngx-stage1-numbers-fun-fact-api.git
 Navigate into the project directory:
 
 bash
