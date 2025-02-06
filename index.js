@@ -54,7 +54,7 @@ app.get('/api/classify-number', async (req, res) => {
         });
     }
 
-    let num = Math.abs(parseInt(number));
+    let num = parseInt(number);
 
     try {
         // Fetching fun fact from Numbers API asynchronously
@@ -63,16 +63,17 @@ app.get('/api/classify-number', async (req, res) => {
 
         // Mathematical properties of the number
         const properties = [];
-        if (isArmstrong(number)) properties.push('armstrong');
-        if (number % 2 !== 0) properties.push('odd');
-        if (number % 2 === 0) properties.push('even');
+        if (isArmstrong(num)) properties.push('armstrong');
+        if (num % 2 !== 0) properties.push('odd');
+        if (num % 2 === 0) properties.push('even');
 
         const result = {
-            number: number,
-            is_prime: isPrime(number),
-            is_perfect: isPerfect(number),
+            number: num,
+            is_prime: isPrime(num),
+            is_perfect: isPerfect(num),
             properties: properties,
-            digit_sum: digitSum(num),
+            digit_sum: digitSum(Math.abs(num)),
+
             fun_fact: funFact
         };
 
