@@ -35,7 +35,7 @@ function isPerfect(number) {
 
 // Check if a number is Armstrong
 function isArmstrong(number) {
-    const num = (number);  // Take the absolute value, because we are dealing with digits
+    const num = Math.abs(number);  // Take the absolute value, because we are dealing with digits
 
     // If the number is a single digit, it's always an Armstrong number
     if (num < 10) {
